@@ -1,0 +1,71 @@
+Build a Jenkins pipeline to pull, build, test, and deploy React app from Git.
+-----------------------------------------------------------------------------
+
+Steps:
+-----
+
+Extract the source code from https://github.com/srithars/cloud-devops/blob/main/Skill%205.zip
+
+Git steps:
+----------
+git init    
+
+git add .   
+
+git commit -m "first commit" 
+
+git branch -M main   
+
+git remote add origin https://github.com/srithars/ecommerce-front.git
+
+git push -u origin main
+
+Apache Running in, 
+http://localhost:9090/
+
+Jenkins Running in,
+http://localhost:8080/
+
+
+Jenkins Configuration:
+1. Source Code Management
+https://github.com/srithars/ecommerce-front.git
+
+2. Branches to build
+./main
+
+3. Triggers
+Poll SCM-> * * * * *
+
+4. Environment
+Delete workspace before build starts
+
+5. Build Steps
+
+5.1 Execute Windows batch command
+call npm install
+call npm run build
+
+5.2 Execute Windows batch command
+rmdir /S /Q "C:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps\ecommerce"
+/S = Delete all files and subfolders (recursively).
+/Q = Quiet mode; no confirmation prompts.
+
+mkdir "C:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps\ecommerce"
+
+xcopy /E /I /Y dist\* "C:\Program Files\Apache Software Foundation\Tomcat 9.0\webapps\ecommerce"
+/E = Copy all subdirectories, even empty ones.
+/I = Treat destination as a directory (helps when it doesn't exist yet).
+/Y = Suppress "overwrite?" confirmation for existing files.
+
+
+5.3 Execute Windows batch command
+net stop Tomcat9
+net start Tomcat9
+
+
+-->Click Build now
+
+Final deployment,
+http://localhost:9090/ecommerce/
+
